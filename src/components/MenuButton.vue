@@ -1,194 +1,101 @@
 <template>
-<div class="menu-button-container" v-on:click="toggleClass()">
-  <div class="stick stick-1" :class="classStatus"></div>
-  <div class="stick stick-2" :class="classStatus"></div>
-  <div class="stick stick-3" :class="classStatus"></div>
-</div>
+  <button class="nav-toggle" :class="classStatus" v-on:click="handleClick()">
+    <span class="bar-top"></span>
+    <span class="bar-mid"></span>
+    <span class="bar-bot"></span>
+  </button>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'menu-button',
   data () {
     return {
       classStatus: {
-        open: false,
-        close: true
+        opened: false
       }
     }
   },
   methods: {
-    handleClick: () => {
-      console.log('aa')
+    ...mapActions(['toggleLeftSideBar']),
+    handleClick () {
       this.toggleClass()
+      this.toggleLeftSideBar()
     },
-    toggleClass: () => {
-      console.log(JSON.stringify(this.classStatus))
+    toggleClass () {
       this.classStatus = {
-        open: !this.classStatus.open,
-        close: !this.classStatus.close
+        opened: !this.classStatus.opened
       }
-      console.log(JSON.stringify(this.classStatus))
     }
   }
 }
 </script>
 <style>
-.menu-button-container {
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer
-}
-.stick {
-  width: 30px;
-  height: 3px;
-  border-radius: 1px;
-  margin-bottom: 5px;
-  background-color: #2DFDB9;
-  display: inline-block;
+.nav-toggle {
+  position: relative;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  margin: 7px 0;
+  top: 50%
+
+  /*
+   * FOR PRESENTATION ONLY
+   * Centers everything, remove for
+   * practical purposes.
+  -webkit-transform(-50%, -50%);
+          transform: translate(-50%, -50%);
+  */
 }
 
-.stick:last-child {
-  margin-bottom: 0px;
+.nav-toggle:focus {
+  outline-width: 0;
 }
 
-.stick-1.open {
-  animation: stick-1-open .6s ease-out forwards;
+.nav-toggle [class*='bar-'] {
+  background: #E8AD1A;
+  display: block;
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+  -webkit-transition: .2s ease all;
+          transition: .2s ease all;
+
+  /*
+   * ENLARGED FOR PRESENTATION
+   * Keep these values at the same proportion
+   * for it to look correct
+  */
+  border-radius: 4px;
+  height: 4px;
+  width: 50px;
+  margin-bottom: 8px;
+
+  /*
+   * Practical values:
+   * border-radius: 2px;
+   * height: 2px;
+   * width: 25px;
+   * margin-bottom: 4px;
+  */
 }
 
-.stick-2.open {
-  animation: stick-2-open .6s linear forwards;
+.nav-toggle .bar-bot {
+  margin-bottom: 0;
 }
 
-.stick-3.open {
-  animation: stick-3-open .6s linear forwards;
+.opened .bar-top {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  -webkit-transform-origin: 15% 15%;
+          transform-origin: 15% 15%;
 }
-
-@keyframes stick-1-open {
-  0% {
-    width: 30px;
-  }
-  40% {
-    background-color: #ff1456;
-    width: 8px;
-    transform: translate(40px, 0px);
-  }
-  75%,
-  80% {
-    width: 8px;
-    transform: translate(40px, -50px);
-    animation-timing-function: cubic-bezier(0, 1, 1, 1);
-  }
-  100% {
-    background-color: #ff1456;
-    width: 8px;
-    transform: translate(35px, 46px);
-  }
+.opened .bar-mid {
+  opacity: 0;
 }
-
-@keyframes stick-2-open {
-  80% {
-    background-color: #2DFDB9;
-    transform: translate(0px, 0px) rotate(0deg);
-  }
-  100% {
-    background-color: #ff1456;
-    transform: translate(8px, 0px) rotate(40deg);
-  }
-}
-
-@keyframes stick-3-open {
-  80% {
-    background-color: #2DFDB9;
-    transform: translate(0px, 0px) rotate(0deg);
-  }
-  100% {
-    background-color: #ff1456;
-    transform: translate(8px, -23px) rotate(-40deg);
-  }
-}
-
-.stick-1.close {
-  width: 8px;
-  transform: translate(27px, 26px);
-  animation: stick-1-close .6s ease-out forwards;
-}
-
-.stick-2.close {
-  transform: translate(0px, 0px) rotate(40deg);
-  animation: stick-2-close .6s ease-out forwards;
-}
-
-.stick-3.close {
-  transform: translate(0px, -23px) rotate(-40deg);
-  animation: stick-3-close .6s ease-out forwards;
-}
-
-@keyframes stick-1-close {
-  0%,
-  70% {
-    width: 0px;
-  }
-  100% {
-    width: 30px;
-    transform: translate(0, 0);
-  }
-}
-
-@keyframes stick-2-close {
-  0% {
-    background-color: #ff1456;
-    width: 30px;
-  }
-  20% {
-    background-color: #ff1456;
-    width: 8px;
-    transform: translate(0, 0px) rotate(40deg);
-  }
-  40% {
-    background-color: #2DFDB9;
-    width: 0px;
-  }
-  65% {
-    transform: translate(0, -70px);
-    animation-timing-function: cubic-bezier(0, 1, 1, 1);
-  }
-  80% {
-    width: 0px;
-  }
-  100% {
-    width: 30px;
-    transform: translate(0, 0px);
-  }
-}
-
-@keyframes stick-3-close {
-  0% {
-    background-color: #ff1456;
-    width: 30px;
-  }
-  20% {
-    background-color: #ff1456;
-    width: 8px;
-    transform: translate(0, -23px) rotate(-40deg);
-  }
-  40% {
-    background-color: #2DFDB9;
-  }
-  65% {
-    transform: translate(0, -93px);
-    animation-timing-function: cubic-bezier(0, 1, 1, 1);
-  }
-  90% {
-    width: 8px;
-  }
-  100% {
-    width: 30px;
-    transform: translate(0, 0px);
-  }
+.opened .bar-bot {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(-45deg);
+  -webkit-transform-origin: 15% 95%;
+          transform-origin: 15% 95%;
 }
 </style>
