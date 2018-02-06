@@ -1,9 +1,9 @@
 <template>
-<el-container>
+<el-container class="dashboard">
   <el-header>
     <my-header></my-header>
   </el-header>
-  <el-container>
+  <el-container class="dashboard-view">
     <transition name="animate-slide" enter-active-class="animated slideInLeft" leave-active-class="animated slideOutLeft">
       <el-aside v-if="show_left_sidebar">
         <side-bar></side-bar>
@@ -50,13 +50,11 @@ export default {
 
 .el-main {
   background-color: #E9EEF3;
-  line-height: 160px;
 }
-html {
-  height: 100%;
+.dashboard {
+  height: 100%
 }
-body {
-  min-height: 100%;
-  margin: 0px
+.dashboard-view {
+  height: calc(100vh - 60px)
 }
 </style>

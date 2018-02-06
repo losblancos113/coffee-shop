@@ -1,88 +1,66 @@
 <template lang="html">
-  <el-table
-    :data="tableData"
-    style="width: 100%">
-    <el-table-column
-      fixed
-      prop="date"
-      label="Date"
-      width="150">
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="Name"
-      width="120">
-    </el-table-column>
-    <el-table-column
-      prop="state"
-      label="State"
-      width="120">
-    </el-table-column>
-    <el-table-column
-      prop="city"
-      label="City"
-      width="120">
-    </el-table-column>
-    <el-table-column
-      prop="address"
-      label="Address"
-      width="300">
-    </el-table-column>
-    <el-table-column
-      prop="zip"
-      label="Zip"
-      width="120">
-    </el-table-column>
-    <el-table-column
-      fixed="right"
-      label="Operations"
-      width="120">
-      <template slot-scope="scope">
-        <el-button @click="handleClick" type="text" size="small">Detail</el-button>
-        <el-button type="text" size="small">Edit</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+  <div class="product-list">
+    <el-table
+      :data="tableData"
+      style="width: 100%">
+      <el-table-column
+        fixed
+        prop="name"
+        label="Tên"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="price"
+        label="Giá"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="image_path"
+        label="Ảnh">
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="Operations"
+        width="120">
+        <template slot-scope="scope">
+          <el-button @click="handleClick" type="text" size="small">Detail</el-button>
+          <el-button type="text" size="small">Edit</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <action-button></action-button>
+  </div>
 </template>
 
 <script>
+import { getProductList } from '@/api/api'
+import { Table, TableColumn, Button } from 'element-ui'
+import ActionButton from '@/components/ActionButton.vue'
+
 export default {
   data () {
     return {
-      tableData: [{
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Home'
-        }, {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        }, {
-          date: '2016-05-04',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Home'
-        }, {
-          date: '2016-05-01',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office'
-        }]
+      tableData: []
     }
+  },
+  components: {
+    'el-table': Table,
+    'el-table-column': TableColumn,
+    'el-button': Button,
+    'action-button': ActionButton
+  },
+  methods: {
+    handleClick () {
+      console.log('hello')
+    }
+  },
+  mounted: function () {
+    this.tableData = getProductList().then(res => {
+      console.log(res)
+      this.tableData = res.data
+    }).catch(error => {
+      console.error(error)
+    })
   }
 }
 </script>

@@ -4,6 +4,8 @@ let base = 'http://localhost:3000/api'
 
 export const requestLogin = params => { return axios.post(`${base}/Users/login`, params).then(res => res) }
 
+export const getProductList = () => { return axios.get(`${base}/product`).then(res => res) }
+
 export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }) }
 
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }) }

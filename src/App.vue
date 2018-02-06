@@ -13,6 +13,7 @@ export default {
 <style>
 body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  height: 100vh;
 }
 #app {
   min-height: 100%;
