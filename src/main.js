@@ -7,8 +7,12 @@ import index from './store/index.js'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css'
 import 'animate.css/animate.min.css'
+import fontawesome from '@fortawesome/fontawesome'
+import brands from '@fortawesome/fontawesome-free-brands'
+import { faTag, faUtensils, faShoppingCart } from '@fortawesome/fontawesome-free-solid'
 
 Vue.config.productionTip = false
+fontawesome.library.add(brands, faTag, faUtensils, faShoppingCart)
 
 // Vue.use(ElementUI)
 

@@ -11,6 +11,7 @@
     </transition>
     <el-main><router-view/></el-main>
   </el-container>
+  <action-button></action-button>
 </el-container>
 </template>
 <script>
@@ -18,6 +19,7 @@ import { Header, Aside, Main, Container } from 'element-ui'
 import { mapGetters } from 'vuex'
 import MyHeader from '@/components/Header.vue'
 import SideBar from '@/components/SideBar.vue'
+import ActionButton from '@/components/ActionButton.vue'
 
 export default {
   name: 'Dashboard',
@@ -33,7 +35,8 @@ export default {
     'el-main': Main,
     'el-container': Container,
     'my-header': MyHeader,
-    'side-bar': SideBar
+    'side-bar': SideBar,
+    'action-button': ActionButton
   }
 }
 </script>

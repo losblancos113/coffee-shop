@@ -1,15 +1,19 @@
 <template lang="html">
   <div id="container-floating">
-    <div class="nd5 nds" data-toggle="tooltip" data-placement="left" data-original-title="Simone"></div>
-    <div class="nd4 nds" data-toggle="tooltip" data-placement="left" data-original-title="contract@gmail.com"><img class="reminder">
-      <p class="letter">C</p>
+    <div class="nd4 nds" data-toggle="tooltip" data-placement="left">
+      <span class="tooltiptext">Tạo order</span>
+      <font-awesome-icon class="button-icon" icon="shopping-cart" />
     </div>
-    <div class="nd3 nds" data-toggle="tooltip" data-placement="left" data-original-title="Reminder"><img class="reminder" src="//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/ic_reminders_speeddial_white_24dp.png" /></div>
-    <div class="nd1 nds" data-toggle="tooltip" data-placement="left" data-original-title="Edoardo@live.it"><img class="reminder">
-      <p class="letter">E</p>
+    <div class="nd3 nds" data-toggle="tooltip" data-placement="left" v-on:click="routeToCreateCategory()">
+      <span class="tooltiptext">Thêm danh mục</span>
+      <font-awesome-icon class="button-icon" icon="tags" />
+    </div>
+    <div class="nd1 nds" data-toggle="tooltip" data-placement="left">
+      <span class="tooltiptext">Thêm sản phẩm</span>
+      <font-awesome-icon class="button-icon" icon="utensils" />
     </div>
 
-    <div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create" onclick="newmail()">
+    <div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create">
       <p class="plus">+</p>
       <img class="edit" src="https://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/bt_compose2_1x.png">
     </div>
@@ -17,15 +21,47 @@
 </template>
 
 <script>
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 export default {
   name: 'action-button',
   data () {
     return {}
+  },
+  computed: {},
+  components: {
+    FontAwesomeIcon
+  },
+  methods: {
+    routeToCreateCategory () {
+      this.$router.push({name: 'createCategory', params: { mode_p: {insert: true, edit: false} }})
+    }
   }
 }
 </script>
 
 <style lang="css">
+.tooltiptext {
+    min-width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 5px;
+    position: absolute;
+    z-index: 1;
+    top: 6px;
+    right: 115%;
+}
+.tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent black;
+}
 #presentation{
   width: 480px;
   height: 120px;
@@ -148,6 +184,10 @@ export default {
   cursor: pointer;
 }
 
+.nds:hover {
+  cursor: pointer
+}
+
 .nd1{
   background: #d3a411;
   right: 40px;
@@ -211,18 +251,15 @@ export default {
   animation-delay: 0.2s;
 }
 
-.letter{
-  font-size: 23px;
-  font-family: 'Roboto';
+.button-icon{
+  font-size: 20px;
   color: white;
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 50%;
   margin: 0;
-  top: 0;
-  bottom: 0;
+  top: 50%;
   text-align: center;
-  line-height: 40px;
+  transform: translate(-50%, -50%)
 }
 
 .reminder{

@@ -6,7 +6,7 @@
           <span>Sản Phẩm</span>
         </template>
         <el-menu-item index="/dashboard/products">Quản Lý Sản Phẩm</el-menu-item>
-        <el-menu-item index="1-2">Danh Mục Sản Phẩm</el-menu-item>
+        <el-menu-item index="/dashboard/category">Danh Mục Sản Phẩm</el-menu-item>
       </el-submenu>
       <el-menu-item index="2">
         <i class="el-icon-menu"></i>

@@ -1,22 +1,18 @@
 <template lang="html">
-  <div class="product-list">
+  <div class="category-list">
     <el-table
       :data="tableData"
       style="width: 100%">
       <el-table-column
         fixed
+        prop="id"
+        label="ID"
+        width="120">
+      </el-table-column>
+      <el-table-column
         prop="name"
         label="Tên"
         width="120">
-      </el-table-column>
-      <el-table-column
-        prop="price"
-        label="Giá"
-        width="120">
-      </el-table-column>
-      <el-table-column
-        prop="image_path"
-        label="Ảnh">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -24,7 +20,7 @@
         width="120">
         <template slot-scope="scope">
           <el-button @click="handleClick" type="text" size="small">Detail</el-button>
-          <el-button type="text" size="small">Edit</el-button>
+          <el-button type="text" v-on:click="editCategory(scope.row)" size="small">Edit</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -32,10 +28,11 @@
 </template>
 
 <script>
-import { getProductList } from '@/api/api'
 import { Table, TableColumn, Button } from 'element-ui'
+import { getCategoryList } from '@/api/api'
 
 export default {
+  name: 'category-list',
   data () {
     return {
       tableData: []
@@ -49,11 +46,14 @@ export default {
   methods: {
     handleClick () {
       console.log('hello')
+    },
+    editCategory (category) {
+      console.log(category)
+      this.$router.push({name: 'editCategory', params: { category, mode_p: { insert: false, edit: true } }})
     }
   },
-  mounted: function () {
-    getProductList().then(res => {
-      console.log(res)
+  mounted () {
+    getCategoryList().then(res => {
       this.tableData = res.data
     }).catch(error => {
       console.error(error)

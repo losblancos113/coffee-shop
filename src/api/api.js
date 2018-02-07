@@ -6,14 +6,8 @@ export const requestLogin = params => { return axios.post(`${base}/Users/login`,
 
 export const getProductList = () => { return axios.get(`${base}/product`).then(res => res) }
 
-export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }) }
+export const addCategory = (category) => { return axios.post(`${base}/category`, category).then(res => res) }
 
-export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }) }
+export const updateCategory = (category) => { return axios.put(`${base}/category`, category).then(res => res) }
 
-export const removeUser = params => { return axios.get(`${base}/user/remove`, { params: params }) }
-
-export const batchRemoveUser = params => { return axios.get(`${base}/user/batchremove`, { params: params }) }
-
-export const editUser = params => { return axios.get(`${base}/user/edit`, { params: params }) }
-
-export const addUser = params => { return axios.get(`${base}/user/add`, { params: params }) }
+export const getCategoryList = () => { return axios.get(`${base}/category`).then(res => res) }
