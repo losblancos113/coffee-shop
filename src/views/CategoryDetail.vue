@@ -1,21 +1,21 @@
 <template lang="html">
-  <el-form :model="formCate" label-width="100px">
-    <el-form-item label="Tên">
+  <el-form :model="formCate" :rules="rules" ref="formCate" label-width="100px">
+    <el-form-item label="Tên" prop="name">
       <el-input v-model="formCate.name" placeholder="Nhập tên danh mục"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" v-on:click="onSubmit()">Tạo</el-button>
-      <el-button @click="reset()">Tạo lại</el-button>
+      <el-button type="primary" v-on:click="onSubmit('formCate')">OK</el-button>
+      <el-button @click="reset('formCate')">Tạo lại</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
-import { Form, Button, Input, FormItem } from 'element-ui'
-import { addCategory, updateCategory } from '@/api/api'
+import { Form, Button, Input, FormItem, Message } from 'element-ui'
+import { addCategory, updateCategory, getCategoryById } from '@/api/api'
 export default {
   name: 'category-detail',
-  props: ['category', 'mode_p'],
+  props: ['category_id'],
   data () {
     return {
       formCate: {
@@ -24,6 +24,16 @@ export default {
       mode: {
         insert: true,
         edit: false
+      },
+      rules: {
+        name: [
+          {
+            required: true,
+            message: 'Không được bỏ trống',
+            trigger: 'blur'
+          },
+          { min: 3, max: 255, message: 'Length should be 3 to 255', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -34,12 +44,20 @@ export default {
     'el-form-item': FormItem
   },
   methods: {
-    onSubmit () {
-      if (this.mode.insert) {
-        this.processAddCate()
-      } else if (this.mode.edit) {
-        this.processUpdateCate()
-      }
+    onSubmit (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if (this.mode.insert) {
+            console.log('Inser mode')
+            this.processAddCate()
+          } else if (this.mode.edit) {
+            console.log('Update mode')
+            this.processUpdateCate()
+          }
+        } else {
+          console.error('Form is not valid')
+        }
+      })
     },
     processAddCate () {
       addCategory(this.formCate).then(res => {
@@ -59,18 +77,48 @@ export default {
         console.error(error)
       })
     },
-    reset () {
-      this.formCate.name = ''
+    reset (formName) {
+      this.$refs[formName].resetFields()
+    },
+    fetchData () {
+      // console.log(this.category_id)
+      if (this.category_id != null) {
+        this.mode = {
+          insert: false,
+          edit: true
+        }
+        getCategoryById(this.category_id).then(res => {
+          let { status, data } = res
+          if (status === 200) {
+            this.formCate = data
+          } else {
+            Message({
+              message: data.error.message,
+              type: 'error'
+            })
+          }
+        }).catch(error => {
+          let { message } = error.response.data.error
+          Message({
+            message: message,
+            type: 'error'
+          })
+          console.error(error)
+        })
+      } else {
+        this.formCate = {
+          name: ''
+        }
+        this.mode = {
+          insert: true,
+          edit: false
+        }
+      }
     }
   },
-  updated () {
-    if (this.category != null) {
-      this.formCate.name = this.category.name
-    }
-    if (this.mode_p != null) {
-      this.mode = this.mode_p
-    }
-    console.log(this.mode_p)
+  beforeRouteEnter (to, from, next) {
+    console.log('beforeRouteEnter')
+    next(vm => vm.fetchData())
   }
 }
 </script>

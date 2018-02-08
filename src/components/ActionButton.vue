@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     routeToCreateCategory () {
-      this.$router.push({name: 'createCategory', params: { mode_p: {insert: true, edit: false} }})
+      this.$router.push({name: 'createCategory'})
     }
   }
 }
@@ -48,7 +48,7 @@ export default {
     border-radius: 6px;
     padding: 5px 5px;
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     top: 6px;
     right: 115%;
 }
@@ -117,7 +117,7 @@ export default {
   height: 70px;
   bottom: 30px;
   right: 30px;
-  z-index: 50px;
+  z-index: 5;
 }
 
 #container-floating:hover{

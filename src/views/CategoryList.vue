@@ -48,8 +48,8 @@ export default {
       console.log('hello')
     },
     editCategory (category) {
-      console.log(category)
-      this.$router.push({name: 'editCategory', params: { category, mode_p: { insert: false, edit: true } }})
+      // console.log(category)
+      this.$router.push({name: 'editCategory', params: { category_id: category.id }})
     }
   },
   mounted () {

@@ -11,3 +11,5 @@ export const addCategory = (category) => { return axios.post(`${base}/category`,
 export const updateCategory = (category) => { return axios.put(`${base}/category`, category).then(res => res) }
 
 export const getCategoryList = () => { return axios.get(`${base}/category`).then(res => res) }
+
+export const getCategoryById = (id) => { return axios.get(`${base}/category/${id}`).then(res => res) }
