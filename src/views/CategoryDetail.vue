@@ -116,6 +116,9 @@ export default {
       }
     }
   },
+  created () {
+    this.fetchData()
+  },
   beforeRouteEnter (to, from, next) {
     console.log('beforeRouteEnter')
     next(vm => vm.fetchData())
