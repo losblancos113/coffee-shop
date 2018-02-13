@@ -6,6 +6,8 @@ import ProductList from '@/views/ProductList.vue'
 import CategoryList from '@/views/CategoryList.vue'
 import CategoryDetail from '@/views/CategoryDetail.vue'
 import Category from '@/views/Category.vue'
+import Product from '@/views/Product.vue'
+import ProductDetail from '@/views/ProductDetail.vue'
 
 Vue.use(Router)
 
@@ -23,7 +25,24 @@ export default new Router({
       children: [
         {
           path: 'products',
-          component: ProductList
+          component: Product,
+          children: [
+            {
+              path: '',
+              component: ProductList
+            },
+            {
+              path: 'create',
+              name: 'createProduct',
+              component: ProductDetail
+            },
+            {
+              path: 'edit',
+              name: 'editProduct',
+              component: ProductDetail,
+              props: true
+            }
+          ]
         }, {
           path: 'category',
           component: Category,

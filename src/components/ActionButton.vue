@@ -1,6 +1,6 @@
 <template lang="html">
   <div id="container-floating">
-    <div class="nd4 nds" data-toggle="tooltip" data-placement="left">
+    <div class="nd4 nds" data-toggle="tooltip" data-placement="left" v-on:click="routeToCreateOrder()">
       <span class="tooltiptext">Tạo order</span>
       <font-awesome-icon class="button-icon" icon="shopping-cart" />
     </div>
@@ -8,7 +8,7 @@
       <span class="tooltiptext">Thêm danh mục</span>
       <font-awesome-icon class="button-icon" icon="tags" />
     </div>
-    <div class="nd1 nds" data-toggle="tooltip" data-placement="left">
+    <div class="nd1 nds" data-toggle="tooltip" data-placement="left" v-on:click="routeToCreateProduct()">
       <span class="tooltiptext">Thêm sản phẩm</span>
       <font-awesome-icon class="button-icon" icon="utensils" />
     </div>
@@ -34,6 +34,12 @@ export default {
   methods: {
     routeToCreateCategory () {
       this.$router.push({name: 'createCategory'})
+    },
+    routeToCreateProduct () {
+      this.$router.push({name: 'createProduct'})
+    },
+    routeToCreateOrder () {
+      // route to create order
     }
   }
 }
