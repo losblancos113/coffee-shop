@@ -39,7 +39,7 @@ export default {
       this.$router.push({name: 'createProduct'})
     },
     routeToCreateOrder () {
-      // route to create order
+      this.$router.push({name: 'createOrder'})
     }
   }
 }

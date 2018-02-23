@@ -8,6 +8,8 @@ import CategoryDetail from '@/views/CategoryDetail.vue'
 import Category from '@/views/Category.vue'
 import Product from '@/views/Product.vue'
 import ProductDetail from '@/views/ProductDetail.vue'
+import Order from '@/views/Order.vue'
+import OrderDetail from '@/views/OrderDetail.vue'
 
 Vue.use(Router)
 
@@ -61,6 +63,17 @@ export default new Router({
               path: 'edit',
               name: 'editCategory',
               component: CategoryDetail,
+              props: true
+            }
+          ]
+        }, {
+          path: 'order',
+          component: Order,
+          children: [
+            {
+              path: 'create',
+              name: 'createOrder',
+              component: OrderDetail,
               props: true
             }
           ]
