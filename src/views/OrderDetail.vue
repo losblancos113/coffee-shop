@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="order-detail">
-    <el-collapse v-model="activeNames" @change="handleChange">
+    <el-collapse class="collapse-wrapper" :accordion="true" v-model="activeNames" @change="handleChange">
       <el-collapse-item v-for="category in data" :key="category.id" :name="category.id">
         <template slot="title">
           <span class="collapse-title">{{ category.name }}</span>
@@ -8,19 +8,19 @@
         <el-container>
           <el-row>
             <el-row>
-              <el-col v-for="n in 6" :key="n" :md="6" :sm="6" :xs="24" class="image-main-section">
+              <el-col v-for="product in category.products" :key="product.id" :md="6" :sm="6" :xs="24" class="image-main-section">
                 <el-row class="img-part">
                   <el-col :md="24" :sm="24" :xs="24" class="img-section">
                     <img src="https://dummyimage.com/200x150/000/ebecf5.png&text=++++image+++">
                   </el-col>
                   <el-col :md="24" :sm="24" :xs="24" class="image-title">
-                    <h3>Image Title</h3>
+                    <h3>{{ product.name }}</h3>
                   </el-col>
                   <el-col :md="24" :sm="24" :xs="24" class="image-description">
-                    <p>Lorem ipsum dolor sed do eiusmod tempor incididunt ut labore et ...</p>
+                    <p>{{ product.price }}</p>
                   </el-col>
                   <el-col :md="24" :sm="24" :xs="24">
-                    <el-button type="primary" @click.native.prevent="handleAddItem">Thêm vào</el-button>
+                    <el-button type="primary" @click.native.prevent="handleAddItem(this)">Thêm vào</el-button>
                   </el-col>
                 </el-row>
               </el-col>
@@ -29,6 +29,33 @@
         </el-container>
       </el-collapse-item>
     </el-collapse>
+    <el-table :data="orderItems">
+      <el-table-column
+        fixed
+        prop="name"
+        label="Tên"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="quantity"
+        label="Số lượng"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        prop="note"
+        label="Ghi chú"
+        width="120">
+      </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="Operations"
+        width="120">
+        <template slot-scope="scope">
+          <el-button type="text" size="small">Detail</el-button>
+          <el-button type="text" size="small">Edit</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <el-container>
       <el-row>
         <el-col :xs="24" :sm="24" :md="24">
@@ -37,6 +64,7 @@
             :visible.sync="showCartDetail"
             class="detail-order-dialog"
             center>
+            <h3>{{ itemDetail.name }}</h3>
             <el-form :model="itemDetail">
               <el-form-item label="Số lượng">
                 <el-input-number v-model="itemDetail.quantity"></el-input-number>
@@ -67,7 +95,9 @@ import {
   InputNumber,
   Message,
   Row, Col, Container,
-  Dialog
+  Dialog,
+  Table,
+  TableColumn
 } from 'element-ui'
 import {
   getProductByCategory,
@@ -77,13 +107,14 @@ export default {
   name: 'order-detail',
   data () {
     return {
-      activeNames: ['1'],
+      activeNames: '1',
       data: [],
       showCartDetail: false,
       itemDetail: {
         quantity: 1,
         note: ''
-      }
+      },
+      orderItems: []
     }
   },
   components: {
@@ -97,11 +128,15 @@ export default {
     'el-container': Container,
     'el-row': Row,
     'el-col': Col,
-    'el-dialog': Dialog
+    'el-dialog': Dialog,
+    'el-table': Table,
+    'el-table-column': TableColumn
   },
   methods: {
     resetDialog () {
       this.itemDetail = {
+        name: '',
+        id: -1,
         quantity: 1,
         note: ''
       }
@@ -110,13 +145,14 @@ export default {
       this.resetDialog()
       this.showCartDetail = false
     },
-    handleAddItem () {
+    handleAddItem (e) {
+      console.log(e)
       this.showCartDetail = true
     },
     addItemToCart () {
-      this.resetDialog()
       this.showCartDetail = false
       // TODO add item to order
+      this.resetDialog()
     },
     handleChange (val) {
       console.log(val)
@@ -176,8 +212,13 @@ export default {
 
 <style lang="css">
 .order-detail {
-  background-color: #fff;
+  /* background-color: #fff; */
   padding: 10px
+}
+.collapse-wrapper {
+  background-color: #fff;
+  padding: 5px;
+  margin-bottom: 10px
 }
 .collapse-title {
   font-weight: bold;
