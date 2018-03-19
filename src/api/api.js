@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let base = 'http://192.168.31.235:3000/api'
+let base = 'http://localhost:3000/api'
 
 export const requestLogin = params => { return axios.post(`${base}/Users/login`, params).then(res => res) }
 

@@ -10,6 +10,16 @@ let actions = {
     commit
   }, payload) {
     commit(types.TOGGLE_LEFT_SIDEBAR, payload)
+  },
+  pushItemToCart ({
+    commit
+  }, payload) {
+    commit(types.PUSH_ITEM_TO_CART, payload)
+  },
+  removeItemFromCart ({
+    commit
+  }, payload) {
+    commit(types.REMOVE_ITEM_FROM_CART, payload)
   }
 }
 

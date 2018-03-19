@@ -4,6 +4,9 @@ let getters = {
   },
   show_left_sidebar (state) {
     return state.show_left_sidebar
+  },
+  cart (state) {
+    return state.cart
   }
 }
 

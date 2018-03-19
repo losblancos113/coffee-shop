@@ -5,8 +5,6 @@
         <template slot="title">
           <span class="collapse-title">{{ category.name }}</span>
         </template>
-        <el-container>
-          <el-row>
             <el-row>
               <el-col v-for="product in category.products" :key="product.id" :md="6" :sm="6" :xs="24" class="image-main-section">
                 <el-row class="img-part">
@@ -20,19 +18,17 @@
                     <p>{{ product.price }}</p>
                   </el-col>
                   <el-col :md="24" :sm="24" :xs="24">
-                    <el-button type="primary" @click.native.prevent="handleAddItem(this)">Thêm vào</el-button>
+                    <el-button type="primary" v-on:click="handleAddItem(product.id,product.id_cate)">Thêm vào</el-button>
                   </el-col>
                 </el-row>
               </el-col>
             </el-row>
-          </el-row>
-        </el-container>
       </el-collapse-item>
     </el-collapse>
-    <el-table :data="orderItems">
+    <el-table v-if="cart.length > 0" :data="cart">
       <el-table-column
         fixed
-        prop="name"
+        prop="product.name"
         label="Tên"
         width="120">
       </el-table-column>
@@ -51,8 +47,14 @@
         label="Operations"
         width="120">
         <template slot-scope="scope">
-          <el-button type="text" size="small">Detail</el-button>
-          <el-button type="text" size="small">Edit</el-button>
+          <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+        <el-button
+          size="mini"
+          type="danger"
+          style="margin-left: 0px; margin-top: 5px"
+          @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -64,7 +66,7 @@
             :visible.sync="showCartDetail"
             class="detail-order-dialog"
             center>
-            <h3>{{ itemDetail.name }}</h3>
+            <h3>{{ itemDetail.product.name }}</h3>
             <el-form :model="itemDetail">
               <el-form-item label="Số lượng">
                 <el-input-number v-model="itemDetail.quantity"></el-input-number>
@@ -85,6 +87,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import {
   Collapse,
   CollapseItem,
@@ -94,6 +97,7 @@ import {
   FormItem,
   InputNumber,
   Message,
+  MessageBox,
   Row, Col, Container,
   Dialog,
   Table,
@@ -105,12 +109,14 @@ import {
 } from '@/api/api'
 export default {
   name: 'order-detail',
+  computed: mapGetters(['cart']),
   data () {
     return {
       activeNames: '1',
       data: [],
       showCartDetail: false,
       itemDetail: {
+        product: {},
         quantity: 1,
         note: ''
       },
@@ -133,10 +139,10 @@ export default {
     'el-table-column': TableColumn
   },
   methods: {
+    ...mapActions(['removeItemFromCart', 'pushItemToCart']),
     resetDialog () {
       this.itemDetail = {
-        name: '',
-        id: -1,
+        product: {},
         quantity: 1,
         note: ''
       }
@@ -145,14 +151,39 @@ export default {
       this.resetDialog()
       this.showCartDetail = false
     },
-    handleAddItem (e) {
-      console.log(e)
+    handleAddItem (productId, categoryId) {
+      console.log(productId)
+      let productSelected = this.data.find(x => x.id === categoryId).products.find(x => x.id === productId)
+      this.itemDetail.product = productSelected
       this.showCartDetail = true
     },
     addItemToCart () {
       this.showCartDetail = false
       // TODO add item to order
+      this.pushItemToCart(this.itemDetail)
       this.resetDialog()
+    },
+    handleDelete (index, row) {
+      MessageBox.confirm('This will permanently delete the file. Continue?', 'Warning', {
+        type: 'warning',
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        customClass: 'default-messagebox'
+      }).then(() => {
+        this.removeItemFromCart(row)
+        Message({
+          message: 'Delete completed',
+          type: 'success'
+        })
+      }).catch(() => {
+        Message({
+          message: 'Delete canceled',
+          type: 'info'
+        })
+      })
+    },
+    handleEdit (index, row) {
+
     },
     handleChange (val) {
       console.log(val)
@@ -211,6 +242,9 @@ export default {
 </script>
 
 <style lang="css">
+.el-main {
+  padding: 0px
+}
 .order-detail {
   /* background-color: #fff; */
   padding: 10px
@@ -254,6 +288,9 @@ export default {
 .product-box {
   margin-left: 20px;
   margin-right: 20px
+}
+.default-messagebox {
+  width: 100vw
 }
 @media only screen and (max-width: 768px) {
   .detail-order-dialog .el-dialog--center{
